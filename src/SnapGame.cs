@@ -52,13 +52,12 @@ namespace CardGames
 			}
 
 			// Draw the back of the cards... to represent the deck
-<<<<<<< HEAD
-			SwinGame.DrawCell (SwinGame.BitmapNamed ("Cards"), 52, 150, 53);
-=======
+
+
 
 			SwinGame.DrawCell (SwinGame.BitmapNamed ("Cards"), 52, 155, 153);
 
->>>>>>> add-background-image
+
 
 			//Draw onto the screen
 			SwinGame.RefreshScreen(60);
