@@ -9,10 +9,11 @@ namespace CardGames
         public static void LoadResources()
         {
             Bitmap cards;
+            SwinGame.LoadFontNamed ("GameFont", "Chunkfive.otf", 24);
 			SoundEffect slap = SwinGame.LoadSoundEffectNamed("slap","slap.wav");
-			SoundEffect jab = SwinGame.LoadSoundEffectNamed("jab","jab.wav");
+			SoundEffect jab = SwinGame.LoadSoundEffectNamed("jab","jabber.wav");
 			SoundEffect shuffle = SwinGame.LoadSoundEffectNamed("shuffle","shuffle.wav");
-			SoundEffect smash = SwinGame.LoadSoundEffectNamed("smash","smash.wav");
+			SoundEffect smash = SwinGame.LoadSoundEffectNamed("smash","smashing.wav");
 
             cards = SwinGame.LoadBitmapNamed ("Cards", "Cards.png");
 			
@@ -84,6 +85,9 @@ namespace CardGames
 
 			// Draw the back of the cards... to represent the deck
 			SwinGame.DrawCell (SwinGame.BitmapNamed ("Cards"),52, 155, 153);
+
+			SwinGame.DrawText ("" + myGame.Score(0), Color.White, "GameFont",60, 55); 
+			SwinGame.DrawText ("" + myGame.Score(1), Color.White, "GameFont",750, 60); 
 
 			//Draw onto the screen
 			SwinGame.RefreshScreen(60);
