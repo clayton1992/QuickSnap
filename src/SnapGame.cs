@@ -9,10 +9,14 @@ namespace CardGames
         public static void LoadResources()
         {
             Bitmap cards;
-            SwinGame.LoadFontNamed ("GameFont", "Chunkfive.otf", 24);
+			SoundEffect slap = SwinGame.LoadSoundEffectNamed("slap","slap.wav");
+			SoundEffect jab = SwinGame.LoadSoundEffectNamed("jab","jab.wav");
+			SoundEffect shuffle = SwinGame.LoadSoundEffectNamed("shuffle","shuffle.wav");
+			SoundEffect smash = SwinGame.LoadSoundEffectNamed("smash","smash.wav");
+
             cards = SwinGame.LoadBitmapNamed ("Cards", "Cards.png");
-            SwinGame.BitmapSetCellDetails (cards, 82, 110, 13, 5, 53);      // set the cells in the bitmap to match the cards
-        	SwinGame.LoadSoundEffectNamed ("Slap", "slap.wav");
+			
+            SwinGame.BitmapSetCellDetails (cards, 167, 250, 13, 5, 53);      // set the cells in the bitmap to match the cards
         }
 
 		/// <summary>
@@ -27,24 +31,33 @@ namespace CardGames
 			if (SwinGame.KeyTyped (KeyCode.vk_SPACE))
 			{
 				myGame.Start ();
+				SwinGame.PlaySoundEffect ("shuffle");
 			}
-			if (myGame.IsStarted)
- {
- if ( SwinGame.KeyTyped (KeyCode.vk_LSHIFT) &&
- SwinGame.KeyTyped (KeyCode.vk_RSHIFT))
- {
+            
+            if (myGame.IsStarted)
+            {
+               if(SwinGame.KeyTyped(KeyCode.vk_LSHIFT)&& SwinGame.KeyTyped(KeyCode.vk_RSHIFT))
+               {
+					SwinGame.StopSoundEffect ("shuffle");
+					SwinGame.PlaySoundEffect ("smash");
+                  
+               }
+                else if (SwinGame.KeyTyped(KeyCode.vk_LSHIFT))
+                {
+                    myGame.PlayerHit(0);
+					SwinGame.StopSoundEffect("shuffle");
+					SwinGame.PlaySoundEffect("slap");
 
-SwinGame.PlaySoundEffect ("Slap");
- }
- else if (SwinGame.KeyTyped (KeyCode.vk_LSHIFT))
- {
- myGame.PlayerHit (0);
- }
- else if (SwinGame.KeyTyped (KeyCode.vk_RSHIFT))
- {
- myGame.PlayerHit (1);
- }
- } 
+                
+                }
+                else if(SwinGame.KeyTyped(KeyCode.vk_RSHIFT))
+                {
+                    myGame.PlayerHit(1);
+					SwinGame.StopSoundEffect("shuffle");
+					SwinGame.PlaySoundEffect("jab");
+                }
+                
+            }
 		}
 
 		/// <summary>
@@ -54,16 +67,15 @@ SwinGame.PlaySoundEffect ("Slap");
 		private static void DrawGame(Snap myGame)
 		{
 			SwinGame.DrawBitmap("cardsBoard.png", 0, 0);
-			//SwinGame.ClearScreen(Color.White);
 
 			// Draw the top card
 			Card top = myGame.TopCard;
 			if (top != null)
 			{
-				SwinGame.DrawText ("Top Card is " + top.ToString (), Color.White, 0, 20);
-				SwinGame.DrawText ("Player 1 score: " + myGame.Score(0), Color.White, "GameFont",0, 30);
-				SwinGame.DrawText ("Player 2 score: " + myGame.Score(1), Color.White, "GameFont",0, 45);
-				SwinGame.DrawCell (SwinGame.BitmapNamed ("Cards"), top.CardIndex, 521, 153);
+				SwinGame.DrawText ("Top Card is " + top.ToString (), Color.RoyalBlue, 0, 20);
+				SwinGame.DrawText ("Player 1 score: " + myGame.Score(0), Color.RoyalBlue, 0, 30);
+				SwinGame.DrawText ("Player 2 score: " + myGame.Score(1), Color.RoyalBlue, 0, 40);
+				SwinGame.DrawCell (SwinGame.BitmapNamed("Cards"), top.CardIndex, 521, 153);
 			}
 			else
 			{
@@ -71,13 +83,8 @@ SwinGame.PlaySoundEffect ("Slap");
 			}
 
 			// Draw the back of the cards... to represent the deck
+			SwinGame.DrawCell (SwinGame.BitmapNamed ("Cards"),52, 155, 153);
 
-
-
-			SwinGame.DrawCell (SwinGame.BitmapNamed ("Cards"), 52, 155, 153);
-
-
-			SwinGame.DrawText ("" + myGame.Score(0), Color.White, "GameFont",0, 30); 
 			//Draw onto the screen
 			SwinGame.RefreshScreen(60);
 		}
